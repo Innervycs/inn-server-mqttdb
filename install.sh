@@ -19,6 +19,7 @@ apt update && apt -y upgrade
 apt install -y curl gnupg lsb-release software-properties-common python3-venv python3-pip nginx
 
 # 2. Install & configure Mosquitto + TimescaleDB
+chmod +x scripts/*.sh
 scripts/setup_mosquitto.sh
 scripts/setup_timescale.sh
 
