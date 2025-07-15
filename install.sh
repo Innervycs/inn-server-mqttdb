@@ -39,3 +39,5 @@ ln -sf /etc/nginx/sites-available/iot-stack.conf /etc/nginx/sites-enabled/
 nginx -t && systemctl reload nginx
 
 printf "\n✅  All components installed and running.\n"
+
+chmod +x scripts/health_check.sh
