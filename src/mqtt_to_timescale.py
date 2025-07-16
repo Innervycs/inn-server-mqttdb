@@ -11,7 +11,6 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 MQTT_HOST = os.getenv("MQTT_HOST", "localhost")
 MQTT_PORT = int(os.getenv("MQTT_PORT", 1883))
-MQTT_TOPIC = os.getenv("MQTT_TOPIC", "sensors/#")
 MQTT_USER = os.getenv("MQTT_USER")
 MQTT_PASS = os.getenv("MQTT_PASS")
 
@@ -29,29 +28,61 @@ conn = psycopg2.connect(host=TS_HOST, port=TS_PORT, dbname=TS_DB, user=TS_USER, 
 conn.autocommit = True
 cur  = conn.cursor()
 
-INSERT_SQL = """
-INSERT INTO sensor_data (time, topic, payload)
-VALUES (%s, %s, %s);
-"""
 
-def insert_message(topic: str, payload_raw: bytes):
-    try:
-        payload = json.loads(payload_raw.decode())
-    except json.JSONDecodeError:
-        payload = {"raw": payload_raw.decode(errors="replace")}
-    cur.execute(INSERT_SQL, (datetime.utcnow(), topic, json.dumps(payload)))
+TOPIC_TO_SQL = {
+    "up_data_sensors": """
+        INSERT INTO sensor_readings (
+            datetime_input, ts_payload, device,
+            cap_lvl15, cap_lvl25, cap_lvl35,
+            temp_lvl15, temp_lvl25, temp_lvl35,
+            weight
+        )
+        VALUES (now(), %(ts)s, %(device)s,
+                %(cap15)s, %(cap25)s, %(cap35)s,
+                %(temp15)s, %(temp25)s, %(temp35)s,
+                %(w)s);
+    """,
+    "up_alerts": """
+        INSERT INTO alert_log (datetime_input, message)
+        VALUES (now(), %(msg)s);
+    """,
+    "up_env": """
+        INSERT INTO env_readings (
+            datetime_input, ts_payload,
+            ambient_temp, ambient_hum
+        )
+        VALUES (now(), %(ts)s, %(t)s, %(h)s);
+    """
+}
+
 
 # ─────────────────────────────────────── MQTT callbacks
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
-        logging.info("MQTT connected — subscribing to %s", MQTT_TOPIC)
-        client.subscribe(MQTT_TOPIC)
+        logging.info("MQTT connected — subscribing to up_data_sensors, up_alerts, up_env")
+        client.subscribe("up_data_sensors")
+        client.subscribe("up_alerts")
+        client.subscribe("up_env")
     else:
         logging.error("MQTT connection failed with code %s", rc)
 
+# def on_message(client, userdata, msg):
+#     insert_message(msg.topic, msg.payload)
+
 def on_message(client, userdata, msg):
-    insert_message(msg.topic, msg.payload)
+    try:
+        payload = json.loads(msg.payload.decode())
+    except json.JSONDecodeError:
+        logging.warning("Payload no es JSON: %s", msg.payload)
+        return
+
+    sql = TOPIC_TO_SQL.get(msg.topic)
+    if not sql:
+        logging.info("Tópico ignorado: %s", msg.topic)
+        return
+
+    cur.execute(sql, payload)
 
 # ─────────────────────────────────────── Main
 client = mqtt.Client(clean_session=True, protocol=mqtt.MQTTv5)
