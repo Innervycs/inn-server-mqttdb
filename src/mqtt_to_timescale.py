@@ -14,6 +14,10 @@ MQTT_PORT = int(os.getenv("MQTT_PORT", 1883))
 MQTT_USER = os.getenv("MQTT_USER")
 MQTT_PASS = os.getenv("MQTT_PASS")
 
+MQTT_TOPIC_DATA_SNS = os.getenv("MQTT_TOPIC_DATA_SNS", "/up_data_sensors") 
+MQTT_TOPIC_ALERT = os.getenv("MQTT_TOPIC_ALERT", "/up_alerts")
+MQTT_TOPIC_DATA_ENV = os.getenv("MQTT_TOPIC_DATA_ENV", "/up_data_env")
+
 TS_HOST = os.getenv("TS_HOST", "localhost")
 TS_PORT = os.getenv("TS_PORT", "5432")
 TS_DB   = os.getenv("TS_DB", "iot")
@@ -46,7 +50,7 @@ TOPIC_TO_SQL = {
         INSERT INTO alert_log (datetime_input, message)
         VALUES (now(), %(msg)s);
     """,
-    "up_env": """
+    "up_data_env": """
         INSERT INTO env_readings (
             datetime_input, ts_payload,
             ambient_temp, ambient_hum
@@ -61,9 +65,9 @@ TOPIC_TO_SQL = {
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         logging.info("MQTT connected — subscribing to up_data_sensors, up_alerts, up_env")
-        client.subscribe("up_data_sensors")
-        client.subscribe("up_alerts")
-        client.subscribe("up_env")
+        client.subscribe(MQTT_TOPIC_DATA_SNS)
+        client.subscribe(MQTT_TOPIC_ALERT)
+        client.subscribe(MQTT_TOPIC_DATA_ENV)
     else:
         logging.error("MQTT connection failed with code %s", rc)
 
