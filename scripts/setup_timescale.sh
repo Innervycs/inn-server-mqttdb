@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+set -a
+source "$(dirname "$0")/../.env"
+set +a
+
 # Add TimescaleDB Apt repo (Ubuntu 24.04 – Noble)
 if [[ ! -f /etc/apt/sources.list.d/timescaledb.list ]]; then
   echo "deb https://packagecloud.io/timescale/timescaledb/ubuntu/ $(lsb_release -c -s) main" \
@@ -11,7 +15,7 @@ fi
 apt update
 apt install -y timescaledb-2-postgresql-16 timescaledb-2-loader-postgresql-16
 
-# Auto‑tune
+echo " Auto‑tune "
 yes | timescaledb-tune --quiet
 systemctl enable --now postgresql
 
