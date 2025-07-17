@@ -16,7 +16,7 @@ apt update
 apt install -y timescaledb-2-postgresql-16 timescaledb-2-loader-postgresql-16
 
 echo " Auto‑tune "
-yes | timescaledb-tune --quiet
+echo "y" | sudo -u postgres timescaledb-tune --quiet
 systemctl enable --now postgresql
 
 echo "Creando usuario $TS_USER y base de datos $TS_DB si no existen..."
