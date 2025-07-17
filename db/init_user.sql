@@ -1,3 +1,4 @@
+-- Crear usuario si no existe
 DO $$
 BEGIN
    IF NOT EXISTS (
@@ -11,15 +12,5 @@ BEGIN
 END
 $$;
 
-DO $$
-BEGIN
-   IF NOT EXISTS (
-      SELECT FROM pg_database WHERE datname = 'iot'
-   ) THEN
-      RAISE NOTICE 'Creando base de datos iot';
-      CREATE DATABASE iot OWNER iot;
-   ELSE
-      RAISE NOTICE 'Base de datos iot ya existe';
-   END IF;
-END
-$$;
+-- Crear base de datos si no existe (fuera de DO)
+-- Este bloque se ejecutará por separado desde bash

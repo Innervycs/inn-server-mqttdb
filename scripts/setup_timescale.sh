@@ -22,7 +22,8 @@ systemctl enable --now postgresql
 echo "Creando usuario $TS_USER y base de datos $TS_DB si no existen..."
 set -x  # <-- Esto muestra los comandos que se ejecutan a partir de aquí
 
-sudo -u postgres psql -v ON_ERROR_STOP=1 -f "$(dirname "$0")/../db/init.sql"
+sudo -u postgres psql -v ON_ERROR_STOP=1 -f "$(dirname "$0")/../db/init_user.sql"
+sudo -u postgres psql -v ON_ERROR_STOP=1 -f "$(dirname "$0")/../db/init_db.sql"
 
 # Asegurar extensión timescaledb en la DB
 psql "postgresql://$TS_USER:$TS_PASS@$TS_HOST:$TS_PORT/$TS_DB" \
