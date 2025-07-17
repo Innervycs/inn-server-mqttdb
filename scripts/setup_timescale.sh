@@ -21,16 +21,20 @@ systemctl enable --now postgresql
 
 echo "Creando usuario $TS_USER y base de datos $TS_DB si no existen..."
 set -x  # <-- Esto muestra los comandos que se ejecutan a partir de aquí
-
 sudo -u postgres psql -v ON_ERROR_STOP=1 -f "$(dirname "$0")/../db/init_user.sql"
+
+echo "Creando la base de datos $TS_DB ..."
+set -x  # <-- Esto muestra los comandos que se ejecutan a partir de aquí
 sudo -u postgres psql -v ON_ERROR_STOP=1 -f "$(dirname "$0")/../db/init_db.sql"
 
-# Asegurar extensión timescaledb en la DB
+echo "Asegurar extensión timescaledb en la DB"
 psql "postgresql://$TS_USER:$TS_PASS@$TS_HOST:$TS_PORT/$TS_DB" \
      -c "CREATE EXTENSION IF NOT EXISTS timescaledb;"
 
+echo "Ejecución de schema para creación de tablas"
 psql "postgresql://$TS_USER:$TS_PASS@$TS_HOST:$TS_PORT/$TS_DB" \
      -f "$(dirname "$0")/../db/schema.sql"
 
+echo "Fin de la ejecución"
 
 

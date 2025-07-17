@@ -86,7 +86,12 @@ def on_message(client, userdata, msg):
         logging.info("Tópico ignorado: %s", msg.topic)
         return
 
-    cur.execute(sql, payload)
+    try:
+        cur.execute(sql, payload)
+    except KeyError as e:
+        logging.error("Falta campo en payload: %s — payload: %s", e, payload)
+    except Exception as e:
+        logging.error("Error al insertar en base de datos: %s", e)
 
 # ─────────────────────────────────────── Main
 client = mqtt.Client(clean_session=True, protocol=mqtt.MQTTv5)

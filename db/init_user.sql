@@ -11,6 +11,3 @@ BEGIN
    END IF;
 END
 $$;
-
--- Crear base de datos si no existe (fuera de DO)
--- Este bloque se ejecutará por separado desde bash
