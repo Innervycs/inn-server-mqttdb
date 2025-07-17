@@ -15,15 +15,19 @@ apt install -y timescaledb-2-postgresql-16 timescaledb-2-loader-postgresql-16
 yes | timescaledb-tune --quiet
 systemctl enable --now postgresql
 
-# Crear usuario y base de datos si no existen
-echo "Creando usuario y base de datos si no existen..."
-sudo -u postgres psql <<EOF
+echo "Creando usuario $TS_USER y base de datos $TS_DB si no existen..."
+set -x  # <-- Esto muestra los comandos que se ejecutan a partir de aquí
+
+sudo -u postgres psql -v ON_ERROR_STOP=1 <<EOF
 DO \$\$
 BEGIN
    IF NOT EXISTS (
       SELECT FROM pg_catalog.pg_user WHERE usename = '$TS_USER'
    ) THEN
+      RAISE NOTICE 'Creando usuario $TS_USER';
       CREATE USER $TS_USER WITH PASSWORD '$TS_PASS';
+   ELSE
+      RAISE NOTICE 'Usuario $TS_USER ya existe';
    END IF;
 END
 \$\$;
@@ -33,7 +37,10 @@ BEGIN
    IF NOT EXISTS (
       SELECT FROM pg_database WHERE datname = '$TS_DB'
    ) THEN
+      RAISE NOTICE 'Creando base de datos $TS_DB';
       CREATE DATABASE $TS_DB OWNER $TS_USER;
+   ELSE
+      RAISE NOTICE 'Base de datos $TS_DB ya existe';
    END IF;
 END
 \$\$;
