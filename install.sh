@@ -9,7 +9,11 @@ usage() {
   echo
   echo "Opciones:"
   echo "  all             Ejecuta todo el proceso de instalación completo."
-  echo "  section A B...  Ejecuta sólo las secciones específicas (A, B, C)."
+  echo "  section A       Actualización sistema base"
+  echo "  section B       Instalando y configurando mosquitto "
+  echo "  section C       Creando entorno virtual para el puente MQTT -> Timescale"
+  echo "  section D       Instalando servicio systemd para el puente"
+  echo "  section E       Configurando servidor Nginx como proxy inverso "
   echo "  --help          Muestra esta ayuda."
   exit 0
 }
