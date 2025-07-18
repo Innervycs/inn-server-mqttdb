@@ -4,6 +4,10 @@ set -euo pipefail
 set -a
 source "$(dirname "$0")/../.env"
 set +a
+# Atención
+# Usa la siguiente linea en el terminal en caso de que sea tu segunda ejecución del script
+# Esto permite borrar la base de datos y partir de cero con la ejecución.
+# sudo -u postgres psql -c "DROP DATABASE IF EXISTS iot;"
 
 # Add TimescaleDB Apt repo (Ubuntu 24.04 – Noble)
 if [[ ! -f /etc/apt/sources.list.d/timescaledb.list ]]; then
