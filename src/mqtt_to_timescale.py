@@ -94,11 +94,11 @@ def on_message(client, userdata, msg):
         logging.error("Error al insertar en base de datos: %s", e)
 
 # ─────────────────────────────────────── Main
-client = mqtt.Client(clean_session=True, protocol=mqtt.MQTTv5)
+client = mqtt.Client(protocol=mqtt.MQTTv5)
 client.username_pw_set(MQTT_USER, MQTT_PASS)
 client.on_connect = on_connect
 client.on_message = on_message
-client.connect(MQTT_HOST, MQTT_PORT)
+client.connect(MQTT_HOST, MQTT_PORT, clean_start=mqtt.MQTT_CLEAN_START_FIRST_ONLY)
 
 # Graceful shutdown
 for sig in (signal.SIGINT, signal.SIGTERM):

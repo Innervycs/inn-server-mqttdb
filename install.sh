@@ -96,6 +96,9 @@ if $RUN_ALL || [[ " ${RUN_SECTION[*]} " =~ " E " ]]; then
   systemctl daemon-reload
   systemctl enable --now mqtt_to_timescale.service
   echo "Servicio mqtt_to_timescale activado correctamente.\n"
+  # En caso de fallo del servicio 
+  # Verificar sudo systemctl status mqtt_to_timescale.service 
+  # journalctl -u mqtt_to_timescale.service -b --no-pager --since "5 minutes ago" 
 fi
 
 if $RUN_ALL || [[ " ${RUN_SECTION[*]} " =~ " F " ]]; then
