@@ -91,5 +91,62 @@ Este comprueba:
 3. Puertos 1883 y 5432 escuchando.
 
 ---
+## Tools
+Herramientas adicionales para pruebas de funcionamiento
+
+### Visualizacion de errores en el servicio mqtt_to_timescale
+```bash
+journalctl -u mqtt_to_timescale.service -b --no-pager --since "5 minutes ago"
+```
+
+### Pub Topico : up_data_sensors
+```bash
+mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
+  -t "up_data_sensors" \
+  -m '{
+    "timestamp": "2025-07-18T20:20:00Z",
+    "device": "AA:BB:CC:DD:EE:FF",
+    "cap_15": 12.34,
+    "cap_25": 23.45,
+    "cap_35": 34.56,
+    "temp_15": 15.1,
+    "temp_25": 25.2,
+    "temp_35": 35.3,
+    "weight": 88.8
+  }'
+```
+
+Chequear la base de dato por insercion de la publicación
+```bash
+psql -U iot -d iot -h localhost -c "SELECT * FROM sensor_readings LIMIT 5;"
+```
+
+### Pub Topico : up_alerts
+```bash
+mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
+  -t "up_alerts" \
+  -m '{
+    "message": "Sensor desconectado en AA:BB:CC:DD:EE:FF"
+  }'
+```
+Chequear la base de dato por insercion de la publicación
+```bash
+psql -U iot -d iot -h localhost -c "SELECT * FROM alert_log LIMIT 5;"
+```
+
+### Pub Topico : up_data_env
+```bash
+mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
+  -t "up_data_env" \
+  -m '{
+    "timestamp": "2025-07-18T20:20:00Z",
+    "temperature": 22.5,
+    "humidity": 55.5
+  }'
+```
+Chequear la base de dato por insercion de la publicación
+```bash
+psql -U iot -d iot -h localhost -c "SELECT * FROM env_readings LIMIT 5;"
+```
 
 ¡Con esto tu **LeLfunko Server** estará listo para recibir datos de tus dispositivos ESP32 y almacenarlos de forma segura! 🚀

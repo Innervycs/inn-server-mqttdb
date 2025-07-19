@@ -14,9 +14,9 @@ MQTT_PORT = int(os.getenv("MQTT_PORT", 1883))
 MQTT_USER = os.getenv("MQTT_USER")
 MQTT_PASS = os.getenv("MQTT_PASS")
 
-MQTT_TOPIC_DATA_SNS = os.getenv("MQTT_TOPIC_DATA_SNS", "/up_data_sensors") 
-MQTT_TOPIC_ALERT = os.getenv("MQTT_TOPIC_ALERT", "/up_alerts")
-MQTT_TOPIC_DATA_ENV = os.getenv("MQTT_TOPIC_DATA_ENV", "/up_data_env")
+MQTT_TOPIC_DATA_SNS = os.getenv("MQTT_TOPIC_DATA_SNS", "up_data_sensors") 
+MQTT_TOPIC_ALERT = os.getenv("MQTT_TOPIC_ALERT", "up_alerts")
+MQTT_TOPIC_DATA_ENV = os.getenv("MQTT_TOPIC_DATA_ENV", "up_data_env")
 
 TS_HOST = os.getenv("TS_HOST", "localhost")
 TS_PORT = os.getenv("TS_PORT", "5432")
