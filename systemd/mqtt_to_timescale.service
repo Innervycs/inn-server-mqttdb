@@ -5,7 +5,7 @@ After=network.target mosquitto.service postgresql.service
 [Service]
 Type=simple
 EnvironmentFile=<REPO_PATH>/.env
-ExecStart=/opt/mqtt2ts-env/bin/python /opt/mqtt2ts-env/lib/python3.*/site-packages/../mqtt_to_timescale.py
+ExecStart=/opt/mqtt2ts-env/bin/python <REPO_PATH>/src/mqtt_to_timescale.py
 Restart=on-failure
 
 [Install]

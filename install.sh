@@ -85,6 +85,7 @@ if $RUN_ALL || [[ " ${RUN_SECTION[*]} " =~ " D " ]]; then
   echo "🔧 Paso D: Creando entorno virtual para el puente MQTT → Timescale..."
   python3 -m venv /opt/mqtt2ts-env
   /opt/mqtt2ts-env/bin/pip install -r requirements.txt
+  echo ll /opt/mqtt2ts-env/
   echo "Entorno virtual instalado y dependencias cargadas.\n"
 fi
 
@@ -109,4 +110,4 @@ printf "\nAll components installed and running.\n"
 
 chmod +x scripts/health_check.sh
 
-echo "✅ Instalación completada."
+echo "Instalación completada."
