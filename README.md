@@ -149,4 +149,9 @@ Chequear la base de dato por insercion de la publicación
 psql -U iot -d iot -h localhost -c "SELECT * FROM env_readings LIMIT 5;"
 ```
 
+Para borrar los datos de las tablas (por datos dummy)
+```bash
+psql -U iot -d iot -h localhost -c "TRUNCATE TABLE sensor_readings, env_readings, alert_log RESTART IDENTITY;"
+```
+
 ¡Con esto tu **LeLfunko Server** estará listo para recibir datos de tus dispositivos ESP32 y almacenarlos de forma segura! 🚀
