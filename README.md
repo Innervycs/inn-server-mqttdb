@@ -101,7 +101,7 @@ journalctl -u mqtt_to_timescale.service -b --no-pager --since "5 minutes ago"
 
 ### Pub Topico : up_data_sensors
 ```bash
-mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
+mosquitto_pub -h localhost -p 1883 -u iotuser -P supersecret \
   -t "up_data_sensors" \
   -m '{
     "ts": "2025-07-18T20:20:00Z",
@@ -123,7 +123,7 @@ psql -U iot -d iot -h localhost -c "SELECT * FROM sensor_readings LIMIT 5;"
 
 ### Pub Topico : up_alerts
 ```bash
-mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
+mosquitto_pub -h localhost -p 1883 -u iotuser -P supersecret \
   -t "up_alerts" \
   -m '{
     "msg": "Sensor desconectado en AA:BB:CC:DD:EE:FF"
@@ -136,7 +136,7 @@ psql -U iot -d iot -h localhost -c "SELECT * FROM alert_log LIMIT 5;"
 
 ### Pub Topico : up_data_env
 ```bash
-mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
+mosquitto_pub -h localhost -p 1883 -u iotuser -P supersecret \
   -t "up_data_env" \
   -m '{
     "ts": "2025-07-18T20:20:00Z",
