@@ -104,7 +104,7 @@ journalctl -u mqtt_to_timescale.service -b --no-pager --since "5 minutes ago"
 mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
   -t "up_data_sensors" \
   -m '{
-    "timestamp": "2025-07-18T20:20:00Z",
+    "ts": "2025-07-18T20:20:00Z",
     "device": "AA:BB:CC:DD:EE:FF",
     "cap_15": 12.34,
     "cap_25": 23.45,
