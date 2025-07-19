@@ -126,7 +126,7 @@ psql -U iot -d iot -h localhost -c "SELECT * FROM sensor_readings LIMIT 5;"
 mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
   -t "up_alerts" \
   -m '{
-    "message": "Sensor desconectado en AA:BB:CC:DD:EE:FF"
+    "msg": "Sensor desconectado en AA:BB:CC:DD:EE:FF"
   }'
 ```
 Chequear la base de dato por insercion de la publicación
@@ -139,7 +139,7 @@ psql -U iot -d iot -h localhost -c "SELECT * FROM alert_log LIMIT 5;"
 mosquitto_pub -h localhost -p 1883 -u tu_usuario -P tu_contraseña \
   -t "up_data_env" \
   -m '{
-    "timestamp": "2025-07-18T20:20:00Z",
+    "ts": "2025-07-18T20:20:00Z",
     "temperature": 22.5,
     "humidity": 55.5
   }'

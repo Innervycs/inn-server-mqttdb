@@ -36,7 +36,7 @@ cur  = conn.cursor()
 TOPIC_TO_SQL = {
     "up_data_sensors": """
         INSERT INTO sensor_readings (
-            datetime_input, ts_payload, device,
+            ts_payload, device,
             cap_lvl15, cap_lvl25, cap_lvl35,
             temp_lvl15, temp_lvl25, temp_lvl35,
             weight
@@ -44,7 +44,7 @@ TOPIC_TO_SQL = {
         VALUES (now(), %(ts)s, %(device)s,
                 %(cap15)s, %(cap25)s, %(cap35)s,
                 %(temp15)s, %(temp25)s, %(temp35)s,
-                %(w)s);
+                %(weight)s);
     """,
     "up_alerts": """
         INSERT INTO alert_log (datetime_input, message)
@@ -55,7 +55,7 @@ TOPIC_TO_SQL = {
             datetime_input, ts_payload,
             ambient_temp, ambient_hum
         )
-        VALUES (now(), %(ts)s, %(t)s, %(h)s);
+        VALUES (now(), %(ts)s, %(temperature)s, %(humidity)s);
     """
 }
 
