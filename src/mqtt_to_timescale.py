@@ -36,7 +36,7 @@ cur  = conn.cursor()
 TOPIC_TO_SQL = {
     "up_data_sensors": """
         INSERT INTO sensor_readings (
-            ts_payload, device,
+            datetime_input, ts_payload, device,
             cap_lvl15, cap_lvl25, cap_lvl35,
             temp_lvl15, temp_lvl25, temp_lvl35,
             weight
